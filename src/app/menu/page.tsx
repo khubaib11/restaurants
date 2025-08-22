@@ -34,7 +34,7 @@ export default function MenuPage() {
           <div
             className="w-full h-full bg-cover bg-center"
             style={{
-              backgroundImage: 'url(https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg)',
+              backgroundImage: 'url(/images/menu-bg.jpeg)',
             }}
           />
         </div>

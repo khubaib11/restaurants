@@ -25,7 +25,7 @@ export default function HeroSection() {
         <div
           className="w-full h-full bg-cover bg-center parallax-bg"
           style={{
-            backgroundImage: 'url(https://images.pexels.com/photos/696218/pexels-photo-696218.jpeg)',
+            backgroundImage: 'url(/images/home-hero-bg.jpeg)',
           }}
         />
         <div className="absolute inset-0 bg-black/60" />

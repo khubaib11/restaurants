@@ -1,47 +1,52 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import Navbar from '@/components/Layout/Navbar';
-import Footer from '@/components/Layout/Footer';
-import { teamMembers } from '@/data/menuData';
-import { Award, Clock, Users, Heart } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import Navbar from "@/components/Layout/Navbar";
+import Footer from "@/components/Layout/Footer";
+import { teamMembers } from "@/data/menuData";
+import { Award, Clock, Users, Heart } from "lucide-react";
+import Image from "next/image";
 
 export default function AboutPage() {
   const features = [
     {
       icon: Award,
-      title: 'Award Winning',
-      description: 'Recognized by culinary experts worldwide for our exceptional cuisine and service.'
+      title: "Award Winning",
+      description:
+        "Recognized by culinary experts worldwide for our exceptional cuisine and service.",
     },
     {
       icon: Clock,
-      title: '20+ Years',
-      description: 'Two decades of culinary excellence and memorable dining experiences.'
+      title: "20+ Years",
+      description:
+        "Two decades of culinary excellence and memorable dining experiences.",
     },
     {
       icon: Users,
-      title: 'Expert Team',
-      description: 'Michelin-trained chefs and professional service staff dedicated to perfection.'
+      title: "Expert Team",
+      description:
+        "Michelin-trained chefs and professional service staff dedicated to perfection.",
     },
     {
       icon: Heart,
-      title: 'Passion Driven',
-      description: 'Every dish is crafted with love and attention to the finest details.'
-    }
+      title: "Passion Driven",
+      description:
+        "Every dish is crafted with love and attention to the finest details.",
+    },
   ];
 
   return (
     <div className="min-h-screen">
       <Navbar />
-      
+
       {/* Hero Section */}
       <section className="pt-24 pb-16 bg-gray-900 relative">
         <div className="absolute inset-0 opacity-20">
           <div
             className="w-full h-full bg-cover bg-center"
             style={{
-              backgroundImage: 'url(https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg)',
+              backgroundImage: "url('/images/about-hero-bg.jpeg')",
             }}
           />
         </div>
@@ -60,8 +65,8 @@ export default function AboutPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
           >
-            A legacy of culinary excellence, where tradition meets innovation 
-            in every dish we serve
+            A legacy of culinary excellence, where tradition meets innovation in
+            every dish we serve
           </motion.p>
         </div>
       </section>
@@ -80,32 +85,37 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-6 text-gray-300 leading-relaxed">
                 <p>
-                  Founded in 2004 by renowned chef Marco Rossini, Bella Vista began as a vision 
-                  to create an extraordinary dining destination that honors traditional Italian 
-                  cuisine while embracing contemporary culinary artistry.
+                  Founded in 2004 by renowned chef Marco Rossini, Bella Vista
+                  began as a vision to create an extraordinary dining
+                  destination that honors traditional Italian cuisine while
+                  embracing contemporary culinary artistry.
                 </p>
                 <p>
-                  Our commitment to excellence extends beyond the kitchen. We source the finest 
-                  ingredients from local farms and trusted suppliers, ensuring every dish 
-                  reflects our passion for quality and authenticity.
+                  Our commitment to excellence extends beyond the kitchen. We
+                  source the finest ingredients from local farms and trusted
+                  suppliers, ensuring every dish reflects our passion for
+                  quality and authenticity.
                 </p>
                 <p>
-                  Over the years, Bella Vista has become more than a restaurant—it&apos;s a place 
-                  where memories are made, celebrations unfold, and the art of fine dining 
-                  is elevated to new heights.
+                  Over the years, Bella Vista has become more than a
+                  restaurant—it&apos;s a place where memories are made,
+                  celebrations unfold, and the art of fine dining is elevated to
+                  new heights.
                 </p>
               </div>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative"
             >
-              <img
-                src="https://images.pexels.com/photos/1395967/pexels-photo-1395967.jpeg"
+              <Image
+                src="/images/about-journey.jpeg"
                 alt="Restaurant Interior"
+                width={800} // required
+                height={600} // required
                 className="rounded-2xl shadow-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
@@ -127,7 +137,8 @@ export default function AboutPage() {
               What Sets Us Apart
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Our dedication to excellence is reflected in every aspect of the dining experience
+              Our dedication to excellence is reflected in every aspect of the
+              dining experience
             </p>
           </motion.div>
 

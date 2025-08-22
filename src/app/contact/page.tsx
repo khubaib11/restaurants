@@ -67,7 +67,7 @@ export default function ContactPage() {
           <div
             className="w-full h-full bg-cover bg-center"
             style={{
-              backgroundImage: 'url(https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg)',
+              backgroundImage: 'url(/images/contact-bg.jpeg)',
             }}
           />
         </div>
