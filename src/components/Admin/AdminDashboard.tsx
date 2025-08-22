@@ -1,38 +1,321 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
 import { 
   LayoutDashboard, 
   ShoppingBag, 
-  Users, 
-  Calendar,
+  ChefHat, 
+  Calendar, 
+  Settings, 
+  Plus, 
+  X, 
+  ChevronRight,
+  Clock,
+  CheckCircle,
+  DollarSign,
+  TrendingUp,
   LogOut,
-  Plus,
+  Utensils,
+  CalendarPlus,
+  Star,
   Eye,
   Edit,
-  Trash2,
-  ChefHat
+  BarChart2
 } from 'lucide-react';
-import OrderManagement from '@/components/Admin/OrderManagment';
-import MenuManagement from '@/components/Admin/MenuManagment';
+import OrderManagement from './OrderManagment';
+import MenuManagement from './MenuManagment';
+import EventManagementComponent from './EventManagement';
+import { useRouter } from 'next/navigation';
 
-type TabType = 'dashboard' | 'orders' | 'menu' | 'events';
+type TabType = 'dashboard' | 'orders' | 'menu' | 'events' | 'settings';
+
+interface TabProps {
+  id: TabType;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+interface QuickAction {
+  id: string;
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  action: () => void;
+}
+
+interface StatCardProps {
+  title: string;
+  value: string | number;
+  icon: React.ComponentType<{ className?: string }>;
+  trend: 'up' | 'down' | 'neutral';
+  change?: string;
+}
+
+const StatCard: React.FC<StatCardProps> = ({ title, value, icon: Icon, trend, change }) => (
+  <div className="bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <div className="flex items-center justify-between">
+      <div>
+        <p className="text-gray-400 text-sm font-medium">{title}</p>
+        <p className="text-2xl font-bold text-white mt-1">{value}</p>
+      </div>
+      <div className={`p-3 rounded-full ${trend === 'up' ? 'bg-green-500/20 text-green-400' : trend === 'down' ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400'}`}>
+        <Icon className="h-6 w-6" />
+      </div>
+    </div>
+    {change && (
+      <div className="mt-4">
+        <span className={`inline-flex items-center text-sm ${trend === 'up' ? 'text-green-400' : 'text-red-400'}`}>
+          {trend === 'up' ? '↑' : '↓'} {change}
+          <span className="text-gray-400 ml-1">vs last month</span>
+        </span>
+      </div>
+    )}
+  </div>
+);
+
+type StatItem = {
+  title: string;
+  value: string;
+  icon: React.ComponentType<{ className?: string }>;
+  trend: 'up' | 'down' | 'neutral';
+  change: string;
+  description?: string;
+};
+
+type OrderItem = {
+  id: string;
+  customer: string;
+  status: 'Completed' | 'Preparing' | 'Pending';
+  total: string;
+  date: string;
+};
+
+type QuickActionItem = {
+  id: string;
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  action: () => void;
+};
+
+interface DashboardOverviewProps {
+  stats: StatItem[];
+  recentOrders: OrderItem[];
+  quickActions: QuickActionItem[];
+}
+
+const DashboardOverview: React.FC<DashboardOverviewProps> = ({ stats, recentOrders, quickActions }) => {
+  const getStatusBadge = (status: OrderItem['status']) => {
+    const statusClasses = {
+      'Completed': 'bg-green-500/20 text-green-400',
+      'Preparing': 'bg-blue-500/20 text-blue-400',
+      'Pending': 'bg-amber-500/20 text-amber-400'
+    } as const;
+    
+    const className = statusClasses[status] || 'bg-gray-500/20 text-gray-400';
+    return <span className={`px-2.5 py-1 text-xs rounded-full ${className}`}>{status}</span>;
+  };
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
+        <p className="text-gray-400 mt-1">Welcome to your restaurant management system. Here's how to get started:</p>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {quickActions.map((action) => (
+          <motion.button
+            key={action.id}
+            whileHover={{ y: -2 }}
+            onClick={action.action}
+            className={`${action.color} p-4 rounded-xl text-white flex flex-col items-center justify-center transition-all shadow-lg`}
+          >
+            <action.icon className="h-8 w-8 mb-2" />
+            <span className="font-medium">{action.title}</span>
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Stats Grid - Simplified */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {stats.map((stat, index) => (
+          <motion.div
+            key={stat.title}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <StatCard {...stat} />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Getting Started Guide */}
+      <div className="bg-gray-800/50 rounded-xl p-6 space-y-6">
+        <h2 className="text-xl font-bold text-white">Getting Started</h2>
+        
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-gray-800/50 p-4 rounded-lg">
+            <h3 className="font-semibold text-white mb-2 flex items-center">
+              <ShoppingBag className="h-5 w-5 mr-2 text-amber-400" />
+              Managing Orders
+            </h3>
+            <p className="text-gray-300 text-sm">
+              View and manage all incoming orders. Update order status, view order details, and handle customer requests.
+              Click on the "Orders" tab in the sidebar to get started.
+            </p>
+          </div>
+          
+          <div className="bg-gray-800/50 p-4 rounded-lg">
+            <h3 className="font-semibold text-white mb-2 flex items-center">
+              <Utensils className="h-5 w-5 mr-2 text-amber-400" />
+              Menu Management
+            </h3>
+            <p className="text-gray-300 text-sm">
+              Add, edit, or remove menu items. Update prices, descriptions, and images. Organize items into categories 
+              for better customer experience.
+            </p>
+          </div>
+          
+          <div className="bg-gray-800/50 p-4 rounded-lg">
+            <h3 className="font-semibold text-white mb-2 flex items-center">
+              <CalendarPlus className="h-5 w-5 mr-2 text-amber-400" />
+              Events & Promotions
+            </h3>
+            <p className="text-gray-300 text-sm">
+              Create and manage special events, promotions, and offers. Add images, set dates, and track event status.
+              Great for seasonal menus or special occasions.
+            </p>
+          </div>
+          
+        </div>
+      </div>
+
+
+      {/* Additional Widgets */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Popular Items */}
+        <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
+          <h3 className="text-lg font-semibold text-white mb-4">Popular Items</h3>
+          <div className="space-y-4">
+            {['Margherita Pizza', 'Pasta Carbonara', 'Caesar Salad', 'Tiramisu', 'Garlic Bread']
+              .map((item, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="h-10 w-10 rounded-md bg-gray-700 flex items-center justify-center">
+                      <Utensils className="h-5 w-5 text-amber-400" />
+                    </div>
+                    <span className="text-gray-200">{item}</span>
+                  </div>
+                  <span className="text-sm text-gray-400">{Math.floor(Math.random() * 50) + 20} orders</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        
+        {/* Recent Activity */}
+        <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
+          <h3 className="text-lg font-semibold text-white mb-4">Recent Activity</h3>
+          <div className="space-y-4">
+            {[
+              { action: 'New order #1234 received', time: '2 min ago' },
+              { action: 'Menu item "Spicy Pasta" updated', time: '1 hour ago' },
+              { action: 'New table reservation for 4 people', time: '3 hours ago' },
+              { action: 'Special offer created', time: '5 hours ago' },
+              { action: 'New staff member added', time: '1 day ago' },
+            ].map((activity, index) => (
+              <div key={index} className="flex items-start space-x-3">
+                <div className="h-2 w-2 rounded-full bg-amber-400 mt-2 flex-shrink-0" />
+                <div>
+                  <p className="text-gray-200">{activity.action}</p>
+                  <p className="text-xs text-gray-400">{activity.time}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const router = useRouter();
 
-  const tabs = [
+  const tabs: TabProps[] = [
     { id: 'dashboard' as TabType, label: 'Dashboard', icon: LayoutDashboard },
     { id: 'orders' as TabType, label: 'Orders', icon: ShoppingBag },
     { id: 'menu' as TabType, label: 'Menu', icon: ChefHat },
-    { id: 'events' as TabType, label: 'Events', icon: Calendar },
+    { id: 'events' as TabType, label: 'Events', icon: Calendar }
+  ];
+
+  const quickActions: QuickAction[] = [
+    {
+      id: 'new-order',
+      title: 'New Order',
+      icon: Plus,
+      color: 'bg-blue-500 hover:bg-blue-600',
+      action: () => setActiveTab('orders' as TabType)
+    },
+    {
+      id: 'add-menu',
+      title: 'Add Menu Item',
+      icon: Utensils,
+      color: 'bg-green-500 hover:bg-green-600',
+      action: () => setActiveTab('menu' as TabType)
+    },
+    {
+      id: 'schedule-event',
+      title: 'Schedule Event',
+      icon: CalendarPlus,
+      color: 'bg-purple-500 hover:bg-purple-600',
+      action: () => setActiveTab('events' as TabType)
+    }
+  ];
+
+  const stats: StatItem[] = [
+    { 
+      title: 'Active Orders', 
+      value: '24', 
+      trend: 'up' as const, 
+      change: '12%', 
+      icon: ShoppingBag,
+      description: 'Orders being prepared or in delivery'
+    },
+    { 
+      title: 'Menu Items', 
+      value: '58', 
+      trend: 'up', 
+      change: '5', 
+      icon: Utensils,
+      description: 'Total items in your menu'
+    },
+    { 
+      title: 'Upcoming Events', 
+      value: '3', 
+      trend: 'neutral', 
+      change: '0', 
+      icon: Calendar,
+      description: 'Scheduled events this week'
+    },
+  ];
+
+  const recentOrders: OrderItem[] = [
+    { id: '#ORD-001', customer: 'John Doe', status: 'Completed' as const, total: '$45.99', date: '2023-06-15' },
+    { id: '#ORD-002', customer: 'Jane Smith', status: 'Preparing' as const, total: '$32.50', date: '2023-06-14' },
+    { id: '#ORD-003', customer: 'Robert Johnson', status: 'Pending' as const, total: '$28.75', date: '2023-06-14' },
   ];
 
   const handleLogout = () => {
     logout();
+    router.push('/admin/login');
   };
 
   return (
@@ -42,156 +325,91 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <ChefHat className="h-8 w-8 gold" />
-              <h1 className="text-2xl font-serif font-bold gold">
+              <ChefHat className="h-8 w-8 text-amber-500" />
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
                 Bella Vista Admin
               </h1>
             </div>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleLogout}
-              className="flex items-center space-x-2 text-gray-300 hover:text-white bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors duration-300"
-            >
-              <LogOut className="h-4 w-4" />
-              <span>Logout</span>
-            </motion.button>
+            <div className="flex items-center space-x-4">
+              <div className="hidden md:flex items-center space-x-2 bg-gray-700 px-3 py-1 rounded-full">
+                <div className="h-8 w-8 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold">
+                  {user?.name?.[0]?.toUpperCase() || 'A'}
+                </div>
+                <span className="text-sm text-gray-200">{user?.name || 'Admin'}</span>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLogout}
+                className="flex items-center space-x-2 text-gray-300 hover:text-white bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors duration-300"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </motion.button>
+            </div>
           </div>
         </div>
       </header>
 
       <div className="flex">
         {/* Sidebar */}
-        <motion.nav
-          initial={{ x: -300 }}
-          animate={{ x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="w-64 bg-gray-800 min-h-screen border-r border-gray-700 p-6"
-        >
-          <div className="space-y-2">
-            {tabs.map((tab) => (
-              <motion.button
-                key={tab.id}
-                whileHover={{ x: 5 }}
-                onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300 ${
-                  activeTab === tab.id
-                    ? 'gold-bg text-gray-900'
-                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
-                }`}
-              >
-                <tab.icon className="h-5 w-5" />
-                <span className="font-medium">{tab.label}</span>
-              </motion.button>
-            ))}
+        <div className="w-64 bg-gray-800 h-[calc(100vh-4rem)] sticky top-16 p-4 overflow-y-auto">
+          <div className="p-2 mb-4">
+            <h2 className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3 px-2">
+              Navigation
+            </h2>
+            <ul className="space-y-1">
+              {tabs.map((tab) => (
+                <li key={tab.id}>
+                  <button
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center w-full px-3 py-2.5 rounded-lg transition-all text-sm font-medium ${
+                      activeTab === tab.id
+                        ? 'bg-amber-500/20 text-amber-400 shadow-lg'
+                        : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
+                    }`}
+                  >
+                    <tab.icon className="h-5 w-5 mr-3" />
+                    {tab.label}
+                    {activeTab === tab.id && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute right-4 w-1.5 h-6 bg-amber-500 rounded-full"
+                        transition={{
+                          type: 'spring',
+                          stiffness: 500,
+                          damping: 30
+                        }}
+                      />
+                    )}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
-        </motion.nav>
+          
+        </div>
 
         {/* Main Content */}
-        <main className="flex-1 p-8">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            {activeTab === 'dashboard' && <DashboardOverview />}
-            {activeTab === 'orders' && <OrderManagement />}
-            {activeTab === 'menu' && <MenuManagement />}
-            {activeTab === 'events' && <EventManagement />}
-          </motion.div>
-        </main>
-      </div>
-    </div>
-  );
-}
-
-function DashboardOverview() {
-  const stats = [
-    { label: 'Total Orders', value: '156', change: '+12%', color: 'text-green-400' },
-    { label: 'Revenue', value: '$12,450', change: '+8%', color: 'text-green-400' },
-    { label: 'Menu Items', value: '48', change: '+2', color: 'text-blue-400' },
-    { label: 'Events', value: '3', change: 'New', color: 'text-gold' },
-  ];
-
-  return (
-    <div>
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-3xl font-serif font-bold gold mb-8"
-      >
-        Dashboard Overview
-      </motion.h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            whileHover={{ y: -5 }}
-            className="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            <h3 className="text-gray-400 text-sm font-medium mb-2">{stat.label}</h3>
-            <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold text-white">{stat.value}</span>
-              <span className={`text-sm font-medium ${stat.color}`}>{stat.change}</span>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-gray-800 p-6 rounded-xl shadow-lg"
-        >
-          <h3 className="text-xl font-serif font-bold text-white mb-4">Recent Activity</h3>
-          <div className="space-y-3">
-            {[
-              'New order from John Doe - $89',
-              'Menu item updated: Wagyu Beef Tenderloin',
-              'Event scheduled: Wine Tasting Evening',
-              'Order completed: Table 5 - $156'
-            ].map((activity, index) => (
-              <div key={index} className="flex items-center space-x-3 p-3 bg-gray-700 rounded-lg">
-                <div className="w-2 h-2 bg-gold rounded-full"></div>
-                <span className="text-gray-300">{activity}</span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-gray-800 p-6 rounded-xl shadow-lg"
-        >
-          <h3 className="text-xl font-serif font-bold text-white mb-4">Quick Actions</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              { label: 'Add Menu Item', icon: Plus },
-              { label: 'View Orders', icon: Eye },
-              { label: 'Edit Menu', icon: Edit },
-              { label: 'Schedule Event', icon: Calendar }
-            ].map((action, index) => (
-              <motion.button
-                key={index}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex flex-col items-center space-y-2 p-4 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors duration-300"
-              >
-                <action.icon className="h-6 w-6 gold" />
-                <span className="text-sm text-gray-300">{action.label}</span>
-              </motion.button>
-            ))}
-          </div>
-        </motion.div>
+        <div className="flex-1 p-6 overflow-y-auto h-[calc(100vh-4rem)]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="h-full"
+            >
+              {activeTab === 'dashboard' && <DashboardOverview stats={stats} recentOrders={recentOrders} quickActions={quickActions} />}
+              {activeTab === 'orders' && <OrderManagement />}
+              {activeTab === 'menu' && <MenuManagement />}
+              {activeTab === 'events' && (
+                <EventManagementComponent />
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
