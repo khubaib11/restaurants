@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Full Website
 
-## Getting Started
+A modern, full-featured Next.js website with TypeScript, Tailwind CSS, and Radix UI components.
 
-First, run the development server:
+## 🚀 Getting Started
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js 18.17 or later
+- npm 9.x or later / yarn 1.22.x or later
+- Git
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Local Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd next-full-website
+   ```
 
-## Learn More
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. **Set up environment variables**
+   ```bash
+   cp env.example .env.local
+   ```
+   Then edit the `.env.local` file with your configuration.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Run the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Deploy on Vercel
+## 🛠️ Built With
+
+- [Next.js](https://nextjs.org/) - The React Framework for the Web
+- [TypeScript](https://www.typescriptlang.org/) - Type-Safe JavaScript
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+- [Radix UI](https://www.radix-ui.com/) - Unstyled, accessible components
+- [shadcn/ui](https://ui.shadcn.com/) - Beautifully designed components
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Push your code to a GitHub, GitLab, or Bitbucket repository
+2. Import your project on Vercel
+3. Add your environment variables in the Vercel dashboard
+4. Deploy!
+
+### Manual Deployment
+
+1. **Build the application**
+   ```bash
+   npm run build
+   ```
+
+2. **Start the production server**
+   ```bash
+   npm start
+   ```
+
+## 📝 Environment Variables
+
+Copy `env.example` to `.env.local` and update the variables:
+
+```bash
+cp env.example .env.local
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Radix UI Documentation](https://www.radix-ui.com/docs)
+- [shadcn/ui Documentation](https://ui.shadcn.com/docs)

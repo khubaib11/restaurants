@@ -1,0 +1,44 @@
+# Ignore files and directories that don't need to be deployed
+
+# Dependencies
+node_modules/
+.next/cache/
+
+# Build files
+.next/
+out/
+
+# Environment variables (handled by Vercel)
+.env*
+!.env.example
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local development
+.DS_Store
+*.pem
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+*.md
+.git/
+.gitignore
+
+# Optional: Uncomment if you don't need these in production
+# .github/
+# .gitlab-ci.yml
+# .circleci/
+# .vscode/
+# *.code-workspace
