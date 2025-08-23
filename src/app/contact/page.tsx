@@ -40,7 +40,7 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'Email',
-      info: 'info@bellavista.com',
+      info: 'khankhubaib@gmail.com',
       description: 'Send us a message'
     },
     {

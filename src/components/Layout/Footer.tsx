@@ -56,7 +56,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 gold flex-shrink-0" />
-                <span className="text-gray-300">info@bellavista.com</span>
+                <span className="text-gray-300">khankhubaib089@gmail.com</span>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin className="h-4 w-4 gold flex-shrink-0 mt-1" />
@@ -100,9 +100,17 @@ export default function Footer() {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="border-t border-gray-700 mt-8 pt-8 text-center"
         >
-          <p className="text-gray-400">
-            © 2024 Bella Vista Restaurant. All rights reserved.
-          </p>
+            <p className="text-gray-400 text-sm flex flex-col md:flex-row items-center justify-center gap-2">
+            <span>
+              © 2024 <span className="gold font-semibold">Bella Vista Restaurant</span>
+            </span>
+            <span className="hidden md:inline">|</span>
+            <span>
+              Developed by <span className="gold font-semibold">Khubaib Khan</span>
+            </span>
+            <span className="hidden md:inline">|</span>
+            <span>All rights reserved.</span>
+            </p>
         </motion.div>
       </div>
     </footer>
