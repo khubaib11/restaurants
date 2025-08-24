@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '2mb',
       allowedOrigins: ['*'] // Be more specific in production
     },
-    serverComponentsExternalPackages: ["@prisma"], // Add any server-only packages here
+
   },
   
   // Configure images (if using Next.js Image component)

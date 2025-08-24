@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+
 import { useAuth } from '@/context/AuthContext';
 import AdminLogin from '@/components/Admin/AdminLogin';
 import AdminDashboard from '@/components/Admin/AdminDashboard';

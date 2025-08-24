@@ -22,7 +22,7 @@ export default function AdminLogin() {
     // Simulate authentication delay
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    if (login(credentials.username, credentials.password)) {
+    if (await login(credentials.username, credentials.password)) {
       router.push('/admin');
     } else {
       setError('Invalid credentials. Please try again.');

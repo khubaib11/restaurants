@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Plus, Image, Video, X, Calendar, Clock, MapPin, Edit, Trash2 } from 'lucide-react';
+import { Plus, Image as LucideImage, Video, X, Calendar, Clock, MapPin, Edit, Trash2 } from 'lucide-react';
 
 type EventStatus = 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
 type EventCategory = 'music' | 'food' | 'art' | 'sports' | 'other';
@@ -162,11 +163,13 @@ export default function EventManagement() {
             className="bg-gray-800 rounded-xl overflow-hidden shadow-lg"
           >
             {event.imageUrl && (
-              <div className="h-48 bg-gray-700 overflow-hidden">
-                <img 
+              <div className="h-48 bg-gray-700 overflow-hidden relative">
+                <Image 
                   src={event.imageUrl} 
                   alt={event.title} 
-                  className="w-full h-full object-cover"
+                  layout="fill"
+                  objectFit="cover"
+                  className="absolute inset-0"
                 />
               </div>
             )}
@@ -350,10 +353,15 @@ export default function EventManagement() {
                     <div className={`flex flex-col items-center justify-center h-32 border-2 border-dashed rounded-lg cursor-pointer ${
                       imagePreview ? 'border-green-500' : 'border-gray-600 hover:border-gray-500'
                     }`}>
-                      <Image size={24} className="text-gray-400 mb-1" />
-                      <span className="text-sm text-gray-400">
-                        {imagePreview ? 'Image Selected' : 'Upload Image'}
-                      </span>
+                                            {imagePreview ? (
+                        <Image src={imagePreview} alt="Event preview" width={64} height={64} className="object-cover rounded-md" />
+                      ) : (
+                        <>
+                          <LucideImage size={24} className="text-gray-400 mb-1" />
+                          <span className="text-sm text-gray-400">Upload Image</span>
+                        </>
+                      )}
+                      
                     </div>
                   </label>
                   

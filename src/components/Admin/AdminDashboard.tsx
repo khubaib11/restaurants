@@ -8,24 +8,13 @@ import {
   ShoppingBag, 
   ChefHat, 
   Calendar, 
-  Settings, 
   Plus, 
-  X, 
-  ChevronRight,
-  Clock,
-  CheckCircle,
-  DollarSign,
-  TrendingUp,
   LogOut,
   Utensils,
-  CalendarPlus,
-  Star,
-  Eye,
-  Edit,
-  BarChart2
+  CalendarPlus
 } from 'lucide-react';
-import OrderManagement from './OrderManagment';
-import MenuManagement from './MenuManagment';
+import OrderManagement from './OrderManagement';
+import MenuManagement from './MenuManagement';
 import EventManagementComponent from './EventManagement';
 import { useRouter } from 'next/navigation';
 
@@ -84,13 +73,7 @@ type StatItem = {
   description?: string;
 };
 
-type OrderItem = {
-  id: string;
-  customer: string;
-  status: 'Completed' | 'Preparing' | 'Pending';
-  total: string;
-  date: string;
-};
+
 
 type QuickActionItem = {
   id: string;
@@ -102,27 +85,17 @@ type QuickActionItem = {
 
 interface DashboardOverviewProps {
   stats: StatItem[];
-  recentOrders: OrderItem[];
   quickActions: QuickActionItem[];
 }
 
-const DashboardOverview: React.FC<DashboardOverviewProps> = ({ stats, recentOrders, quickActions }) => {
-  const getStatusBadge = (status: OrderItem['status']) => {
-    const statusClasses = {
-      'Completed': 'bg-green-500/20 text-green-400',
-      'Preparing': 'bg-blue-500/20 text-blue-400',
-      'Pending': 'bg-amber-500/20 text-amber-400'
-    } as const;
-    
-    const className = statusClasses[status] || 'bg-gray-500/20 text-gray-400';
-    return <span className={`px-2.5 py-1 text-xs rounded-full ${className}`}>{status}</span>;
-  };
+const DashboardOverview: React.FC<DashboardOverviewProps> = ({ stats, quickActions }) => {
+
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
-        <p className="text-gray-400 mt-1">Welcome to your restaurant management system. Here's how to get started:</p>
+        <p className="text-gray-400 mt-1">Welcome to your restaurant management system. Here&apos;s how to get started:</p>
       </div>
 
       {/* Quick Actions */}
@@ -166,7 +139,7 @@ const DashboardOverview: React.FC<DashboardOverviewProps> = ({ stats, recentOrde
             </h3>
             <p className="text-gray-300 text-sm">
               View and manage all incoming orders. Update order status, view order details, and handle customer requests.
-              Click on the "Orders" tab in the sidebar to get started.
+              Click on the &quot;Orders&quot; tab in the sidebar to get started.
             </p>
           </div>
           
@@ -307,12 +280,6 @@ export default function AdminDashboard() {
     },
   ];
 
-  const recentOrders: OrderItem[] = [
-    { id: '#ORD-001', customer: 'John Doe', status: 'Completed' as const, total: '$45.99', date: '2023-06-15' },
-    { id: '#ORD-002', customer: 'Jane Smith', status: 'Preparing' as const, total: '$32.50', date: '2023-06-14' },
-    { id: '#ORD-003', customer: 'Robert Johnson', status: 'Pending' as const, total: '$28.75', date: '2023-06-14' },
-  ];
-
   const handleLogout = () => {
     logout();
     router.push('/admin/login');
@@ -401,7 +368,7 @@ export default function AdminDashboard() {
               transition={{ duration: 0.2 }}
               className="h-full"
             >
-              {activeTab === 'dashboard' && <DashboardOverview stats={stats} recentOrders={recentOrders} quickActions={quickActions} />}
+              {activeTab === 'dashboard' && <DashboardOverview stats={stats} quickActions={quickActions} />}
               {activeTab === 'orders' && <OrderManagement />}
               {activeTab === 'menu' && <MenuManagement />}
               {activeTab === 'events' && (
@@ -411,40 +378,6 @@ export default function AdminDashboard() {
           </AnimatePresence>
         </div>
       </div>
-    </div>
-  );
-}
-
-function EventManagement() {
-  return (
-    <div>
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-3xl font-serif font-bold gold mb-8"
-      >
-        Event Management
-      </motion.h2>
-      
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="bg-gray-800 p-8 rounded-xl shadow-lg text-center"
-      >
-        <Calendar className="h-16 w-16 gold mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-white mb-2">Event Management</h3>
-        <p className="text-gray-400 mb-6">
-          Manage restaurant events, special dinners, and celebrations
-        </p>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="gold-bg text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition-colors duration-300"
-        >
-          Coming Soon
-        </motion.button>
-      </motion.div>
     </div>
   );
 }

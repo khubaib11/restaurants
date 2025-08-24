@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChefHat, Phone, Mail, MapPin, Clock, Instagram, Facebook, Twitter } from 'lucide-react';
+import { ChefHat, Phone, Mail, MapPin, Instagram, Facebook, Twitter } from 'lucide-react';
 
 export default function Footer() {
   return (

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit, Trash2, X, Star, DollarSign, Tag, FileText } from 'lucide-react';
 import { menuItems as initialMenuItems, MenuItem } from '@/data/menuData';
@@ -127,10 +128,11 @@ export default function MenuManagement() {
               className="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <div className="relative">
-                <img
+                <Image
                   src={item.image}
                   alt={item.name}
-                  className="w-full h-40 object-cover"
+                  layout="fill"
+                  objectFit="cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 

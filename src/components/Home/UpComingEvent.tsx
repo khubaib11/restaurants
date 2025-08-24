@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Users } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { events } from '@/data/menuData';
 
 export default function UpcomingEvents() {

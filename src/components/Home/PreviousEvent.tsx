@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { events } from '@/data/menuData';
@@ -49,10 +50,11 @@ export default function PreviousEvents() {
               >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                   <div className="relative h-64 lg:h-80">
-                    <img
+                    <Image
                       src={pastEvents[currentIndex].image}
                       alt={pastEvents[currentIndex].title}
-                      className="w-full h-full object-cover"
+                      layout="fill"
+                      objectFit="cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-gray-900/50 lg:to-gray-900" />
                   </div>
