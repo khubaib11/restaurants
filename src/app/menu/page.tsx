@@ -40,17 +40,17 @@ export default function MenuPage() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
             className="text-5xl md:text-6xl font-serif font-bold mb-6 gold"
           >
             Our Menu
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
             className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed"
           >
             Discover our carefully curated selection of traditional dishes, 
@@ -66,10 +66,11 @@ export default function MenuPage() {
             {categories.map((category) => (
               <motion.button
                 key={category.id}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ duration: 0.15 }}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                className={`px-6 py-3 rounded-full font-medium ${
                   selectedCategory === category.id
                     ? 'gold-bg text-gray-900'
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white'
@@ -87,19 +88,21 @@ export default function MenuPage() {
 
       {/* Order Button */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
         className="py-16 text-center bg-gray-800"
       >
         <motion.button
           whileHover={{ 
-            scale: 1.05,
-            boxShadow: "0 0 25px rgba(212, 175, 55, 0.4)"
+            scale: 1.03,
+            boxShadow: "0 0 15px rgba(212, 175, 55, 0.3)"
           }}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ duration: 0.2 }}
           onClick={() => setShowOrderModal(true)}
-          className="gold-bg text-gray-900 px-12 py-4 rounded-lg font-semibold text-xl hover:bg-yellow-500 transition-all duration-300"
+          className="gold-bg text-gray-900 px-12 py-4 rounded-lg font-semibold text-xl hover:bg-yellow-500"
         >
           Place Your Order
         </motion.button>

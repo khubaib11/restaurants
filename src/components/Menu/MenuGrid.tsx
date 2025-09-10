@@ -29,17 +29,18 @@ export default function MenuGrid({ items }: MenuGridProps) {
           {items.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="group bg-gray-800 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500"
+              viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+              transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.5) }}
+              whileHover={{ y: -3, scale: 1.01 }}
+              className="group bg-gray-800 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl"
             >
               <div className="relative overflow-hidden">
                 <motion.img
                   src={item.image}
                   alt={item.name}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 
@@ -53,10 +54,11 @@ export default function MenuGrid({ items }: MenuGridProps) {
                 )}
 
                 <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ duration: 0.15 }}
                   onClick={() => handleAddToCart(item)}
-                  className="absolute bottom-4 right-4 bg-gold text-gray-900 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-yellow-500"
+                  className="absolute bottom-4 right-4 bg-gold text-gray-900 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-yellow-500"
                 >
                   <Plus className="h-5 w-5" />
                 </motion.button>
@@ -80,10 +82,11 @@ export default function MenuGrid({ items }: MenuGridProps) {
                   </span>
                   
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{ duration: 0.15 }}
                     onClick={() => handleAddToCart(item)}
-                    className="text-gold hover:text-yellow-500 font-medium text-sm transition-colors duration-300"
+                    className="text-gold hover:text-yellow-500 font-medium text-sm"
                   >
                     Add to Order
                   </motion.button>

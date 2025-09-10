@@ -12,11 +12,24 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // Throttled scroll handler to reduce the number of calculations
+    let lastScrollY = 0;
+    let ticking = false;
+    
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      lastScrollY = window.scrollY;
+      
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(lastScrollY > 50);
+          ticking = false;
+        });
+        
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -31,8 +44,8 @@ export default function Navbar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
         scrolled
           ? 'bg-gray-900/95 backdrop-blur-sm shadow-lg'
           : 'bg-transparent'
@@ -63,10 +76,11 @@ export default function Navbar() {
                   className="relative group"
                 >
                   <motion.span
-                    className={`text-gray-300 hover:text-white transition-colors duration-200 ${
+                    className={`text-gray-300 hover:text-white transition-colors duration-150 ${
                       pathname === link.href ? 'gold' : ''
                     }`}
-                    whileHover={{ y: -2 }}
+                    whileHover={{ y: -1 }}
+                    transition={{ duration: 0.1 }}
                   >
                     {link.label}
                   </motion.span>
@@ -74,7 +88,7 @@ export default function Navbar() {
                     <motion.div
                       className="absolute -bottom-1 left-0 right-0 h-0.5 gold-bg"
                       layoutId="navbar-indicator"
-                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                      transition={{ type: 'spring', bounce: 0.1, duration: 0.4 }}
                     />
                   )}
                 </Link>
@@ -102,8 +116,12 @@ export default function Navbar() {
           opacity: isOpen ? 1 : 0, 
           height: isOpen ? 'auto' : 0 
         }}
-        transition={{ duration: 0.3 }}
-        className="md:hidden bg-gray-900/95 backdrop-blur-sm overflow-hidden"
+        transition={{ 
+          duration: 0.15,
+          height: { type: "tween", ease: "easeOut" },
+          opacity: { duration: 0.05 }
+        }}
+        className="md:hidden bg-gray-900/95 backdrop-blur-sm overflow-hidden will-change-transform"
       >
         <div className="px-2 pt-2 pb-3 space-y-1">
           {navLinks.map((link) => (

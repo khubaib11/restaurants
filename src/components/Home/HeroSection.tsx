@@ -6,8 +6,11 @@ import Link from 'next/link';
 
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
+  
+  // Use a throttled scroll handler to reduce calculations
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 150]);
+  // Optimize transform with a smaller motion range
+  const y = useTransform(scrollY, [0, 500], [0, 100]);
 
   useEffect(() => {
     setMounted(true);
@@ -59,26 +62,10 @@ export default function HeroSection() {
         >
           <Link href="/menu">
             <motion.button
-              whileHover={{ 
-                scale: 1.05,
-                boxShadow: "0 0 25px rgba(212, 175, 55, 0.4)"
-              }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              animate={{
-                boxShadow: [
-                  "0 0 0px rgba(212, 175, 55, 0.4)",
-                  "0 0 20px rgba(212, 175, 55, 0.6)",
-                  "0 0 0px rgba(212, 175, 55, 0.4)"
-                ]
-              }}
-              transition={{
-                boxShadow: {
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatType: "reverse"
-                }
-              }}
-              className="gold-bg text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-500 transition-all duration-300 block w-full sm:w-auto"
+              className="gold-bg text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-500 transition-all duration-300 block w-full sm:w-auto relative overflow-hidden"
+           
             >
               Order Now
             </motion.button>
@@ -96,25 +83,20 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+      {/* Optimized Scroll Indicator - using CSS animation */}
+      <div
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 animate-fadeIn"
+        style={{ animationDelay: '1.5s', animationFillMode: 'forwards' }}
       >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
+        <div
           className="w-6 h-10 border-2 border-gold rounded-full flex justify-center"
         >
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1 h-3 gold-bg rounded-full mt-2"
+          <div
+            className="w-1 h-3 gold-bg rounded-full mt-2 animate-bounce"
+            style={{ animationDuration: '1.5s' }}
           />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

@@ -4,8 +4,18 @@ import { Inter, Playfair_Display } from 'next/font/google';
 import { AuthProvider } from '@/context/AuthContext';
 import { CartProvider } from '@/context/CartContext';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap', // Prevents FOIT (Flash of Invisible Text)
+  preload: true    // Preloads the font
+});
+const playfair = Playfair_Display({ 
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+  preload: true
+});
 
 export const metadata: Metadata = {
   title: 'Bella Vista Restaurant - Fine Dining Experience',

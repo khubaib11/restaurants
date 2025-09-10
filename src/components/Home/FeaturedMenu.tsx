@@ -30,19 +30,18 @@ export default function FeaturedMenu() {
           {featuredItems.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              whileHover={{ y: -5 }}
-              className="group"
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="group transform hover:-translate-y-2 transition-transform duration-300"
             >
               <div className="bg-gray-700 rounded-xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
                 <div className="relative overflow-hidden">
-                  <motion.img
+                  <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                    whileHover={{ scale: 1.1 }}
+                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500 will-change-transform"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute top-4 right-4">

@@ -52,17 +52,17 @@ export default function AboutPage() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.5 }}
             className="text-5xl md:text-6xl font-serif font-bold mb-6 gold"
           >
             Our Story
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
           >
             A legacy of culinary excellence, where tradition meets innovation in
@@ -75,11 +75,7 @@ export default function AboutPage() {
       <section className="py-20 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+            <div>
               <h2 className="text-4xl font-serif font-bold mb-6 gold">
                 A Culinary Journey
               </h2>
@@ -103,23 +99,19 @@ export default function AboutPage() {
                   new heights.
                 </p>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
-            >
+            <div className="relative">
               <Image
                 src="/images/about-journey.jpeg"
                 alt="Restaurant Interior"
-                width={800} // required
-                height={600} // required
+                width={800}
+                height={600}
                 className="rounded-2xl shadow-2xl"
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -128,9 +120,10 @@ export default function AboutPage() {
       <section className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.4 }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-serif font-bold mb-4 gold">
@@ -146,9 +139,10 @@ export default function AboutPage() {
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
                 whileHover={{ y: -5 }}
                 className="text-center group"
               >
@@ -173,9 +167,10 @@ export default function AboutPage() {
       <section className="py-20 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.4 }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-serif font-bold mb-4 gold">
@@ -190,9 +185,10 @@ export default function AboutPage() {
             {teamMembers.map((member, index) => (
               <motion.div
                 key={member.id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
                 whileHover={{ y: -10 }}
                 className="group text-center"
               >

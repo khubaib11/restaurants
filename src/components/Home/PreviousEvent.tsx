@@ -8,15 +8,19 @@ import { events } from '@/data/menuData';
 
 export default function PreviousEvents() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const pastEvents = events.filter(event => event.status === 'past');
+  // Use useMemo to avoid re-filtering on each render
+  const pastEvents = React.useMemo(() => 
+    events.filter(event => event.status === 'past'),
+    [] // Empty dependency array means this only runs once
+  );
 
-  const nextSlide = () => {
+  const nextSlide = React.useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % pastEvents.length);
-  };
+  }, [pastEvents.length]);
 
-  const prevSlide = () => {
+  const prevSlide = React.useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + pastEvents.length) % pastEvents.length);
-  };
+  }, [pastEvents.length]);
 
   if (pastEvents.length === 0) return null;
 
@@ -26,6 +30,7 @@ export default function PreviousEvents() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
@@ -39,32 +44,31 @@ export default function PreviousEvents() {
 
         <div className="relative">
           <div className="overflow-hidden rounded-2xl">
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={currentIndex}
-                initial={{ opacity: 0, x: 300 }}
+                initial={{ opacity: 0, x: 100 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -300 }}
-                transition={{ duration: 0.5 }}
-                className="relative"
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: "easeInOut"
+                }}
+                className="relative will-change-transform"
               >
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                   <div className="relative h-64 lg:h-80">
                     <Image
                       src={pastEvents[currentIndex].image}
                       alt={pastEvents[currentIndex].title}
-                      layout="fill"
-                      objectFit="cover"
+                      fill
+                      style={{ objectFit: "cover" }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-gray-900/50 lg:to-gray-900" />
                   </div>
                   
                   <div className="bg-gray-700 p-8 lg:p-12 flex flex-col justify-center">
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                    >
+                    <div>
                       <div className="inline-block bg-gold text-gray-900 px-4 py-2 rounded-full text-sm font-semibold mb-4">
                         {new Date(pastEvents[currentIndex].date).toLocaleDateString('en-US', { 
                           year: 'numeric',
@@ -78,7 +82,7 @@ export default function PreviousEvents() {
                       <p className="text-gray-300 text-lg leading-relaxed">
                         {pastEvents[currentIndex].description}
                       </p>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -88,23 +92,19 @@ export default function PreviousEvents() {
           {/* Navigation Buttons */}
           {pastEvents.length > 1 && (
             <>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+              <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-800/80 hover:bg-gold text-white hover:text-gray-900 p-3 rounded-full transition-all duration-300"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-800/80 hover:bg-gold text-white hover:text-gray-900 p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-90"
               >
                 <ChevronLeft className="h-6 w-6" />
-              </motion.button>
+              </button>
               
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+              <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-800/80 hover:bg-gold text-white hover:text-gray-900 p-3 rounded-full transition-all duration-300"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-800/80 hover:bg-gold text-white hover:text-gray-900 p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-90"
               >
                 <ChevronRight className="h-6 w-6" />
-              </motion.button>
+              </button>
             </>
           )}
 
@@ -112,11 +112,10 @@ export default function PreviousEvents() {
           {pastEvents.length > 1 && (
             <div className="flex justify-center mt-8 space-x-2">
               {pastEvents.map((_, index) => (
-                <motion.button
+                <button
                   key={index}
-                  whileHover={{ scale: 1.2 }}
                   onClick={() => setCurrentIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`w-3 h-3 rounded-full transition-all duration-300 hover:scale-125 transform-gpu ${
                     index === currentIndex ? 'gold-bg' : 'bg-gray-600 hover:bg-gray-500'
                   }`}
                 />

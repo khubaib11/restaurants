@@ -10,40 +10,48 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '2mb',
       allowedOrigins: ['*'] // Be more specific in production
     },
-
   },
   
   // Configure images (if using Next.js Image component)
   images: {
     domains: [
       'localhost',
-      // Add your production domain(s) here
+      'images.pexels.com'
     ],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**', // Adjust this to be more specific in production
+        hostname: '*.pexels.com',
       },
     ],
+    // Optimize images for better performance
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    formats: ['image/webp', 'image/avif'],
   },
   
   // Enable webpack 5 for better performance
   webpack: (config, { isServer }) => {
-    // Configure webpack to handle certain file types if needed
-    // For example, if you're using SVGs as React components:
-    // config.module.rules.push({
-    //   test: /\.svg$/,
-    //   use: ['@svgr/webpack'],
-    // });
+    // Optimize chunk sizes
+    config.optimization = {
+      ...config.optimization,
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          commons: {
+            name: 'commons',
+            chunks: 'initial',
+            minChunks: 2,
+          },
+        },
+      },
+    };
     
     return config;
   },
   
   // Enable output file tracing for better deployment optimization
   output: 'standalone',
-  
-  // Enable SWC minification
-  swcMinify: true,
   
   // Enable compiler optimizations
   compiler: {
